@@ -1,3 +1,4 @@
+#!/bin/bash
 vm_list() {
     echo "Memindai daftar Virtual Machine..."
     echo "Daftar VM terdaftar:"
