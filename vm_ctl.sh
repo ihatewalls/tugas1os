@@ -3,6 +3,32 @@ vm_list() {
     echo "Daftar VM terdaftar:"
     VBoxManage list vms | awk -F'"' '{print NR". "$2}'
 }
+
+vm_info() {
+    local vm_name="$1"
+    if [ -z "$vm_name" ]; then
+        echo "Usage: ./vm_ctl.sh info <nama_vm>"
+        exit 1
+    fi
+
+    local info
+    info=$(VBoxManage showvminfo "$vm_name" --machinereadable 2>/dev/null)
+    
+    if [ $? -ne 0 ] || [ -z "$info" ]; then
+        echo "Error: VM '$vm_name' tidak ditemukan."
+        exit 1
+    fi
+
+    local ram=$(echo "$info" | grep -E '^memory=' | cut -d'=' -f2)
+    local vcpu=$(echo "$info" | grep -E '^cpus=' | cut -d'=' -f2)
+    local state=$(echo "$info" | grep -E '^VMState=' | cut -d'=' -f2 | tr -d '"')
+
+    echo "VM                : $vm_name"
+    echo "RAM dialokasikan  : ${ram} MB"
+    echo "vCPU dialokasikan : $vcpu"
+    echo "Status saat ini   : $state"
+}
+
 snapshot(){
     if [ "$2" == "create" ]; then
         VBoxManage snapshot $3 take $4
@@ -16,7 +42,7 @@ echo "===================================
 if [ "$1" == "list" ]; then
     list $1
 elif [ "$1" == "info" ]; then
-    info $1 $2
+    vm_info "$2"
 elif [ "$1" == "start" ]; then
     start $1 $2 
 elif [ "$1" == "stop" ]; then
