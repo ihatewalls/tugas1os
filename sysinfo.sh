@@ -66,8 +66,10 @@ fi
 # Remove (_)
 disk_detail="${disk_detail//_/ }"
 mem_detail="${mem_detail//_/ }"
+
 echo ""
 echo "Fitur Tambahan:"
+# Grab uptime using uptime -p, remove "up" to get just the time
 uptime_info=$(uptime -p | sed 's/up//')
 awk -v uptime="$uptime_info" 'BEGIN{printf "Uptime VM: %s\n", uptime}'  
 
