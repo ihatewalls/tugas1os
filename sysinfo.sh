@@ -4,6 +4,10 @@ read -r disk_status disk_detail mem_status mem_detail <<< $(echo "$disk_usage $m
 # Remove (_)
 disk_detail="${disk_detail//_/ }"
 mem_detail="${mem_detail//_/ }"
+echo ""
+echo "Fitur Tambahan:"
+uptime_info=$(uptime -p | sed 's/up//')
+awk -v uptime="$uptime_info" 'BEGIN{printf "Uptime VM: %s\n", uptime}'  
 
 # File Report
 cat <<EOF > sysinfo_report.txt
