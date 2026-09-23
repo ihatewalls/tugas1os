@@ -62,8 +62,26 @@ disk_usage=$(df | grep -w "/" | awk '{print $5}' | sed 's/%//')
 mem_usage=$(free | grep "Mem" | awk '{print 100*($2 - $7)/$2}')
 
 # Ambil Output Resource Check jika program sudah dikompilasi
-if [ -x "./resource_check" ]; then
-    read -r disk_status disk_detail mem_status mem_detail <<< $(echo "$disk_usage $mem_usage" | ./resource_check)
+if [ -f "./resource_check" ]; then
+	if [ -x "./resource_check" ]; then
+	    read -r disk_status disk_detail mem_status mem_detail <<< $(echo "$disk_usage $mem_usage" | ./resource_check)
+    # Kalau belum dikasih permisi eksekusi, dikasih dulu
+	else
+	    chmod +x ./resource_check
+	    read -r disk_status disk_detail mem_status mem_detail <<< $(echo "$disk_usage $mem_usage" | ./resource_check)
+	fi
+# Kalau belum dikompilasi tapi ada code c, akan dikompilasi
+elif [ -f "./resource_check.c" ]; then
+	gcc ./resource_check.c -o resource_check
+	chmod +x ./resource_check
+	read -r disk_status disk_detail mem_status mem_detail <<< $(echo "$disk_usage $mem_usage" | ./resource_check)
+# Kalau belum dikompilasi dan tidak ada code c, menampilkan ERROR
+else 
+	echo "ERROR: resource_check not found"
+    disk_detail="ERROR File Not Found"
+    mem_detail="ERROR File Not Found"
+    disk_status="ERROR File Not Found"
+    mem_status="ERROR File Not Found"
 fi
 
 # Print Disk & Memory Usage
