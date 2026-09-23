@@ -29,6 +29,18 @@ vm_info() {
     echo "Status saat ini   : $state"
 }
 
+start() {
+    echo "Menyalakan VM '$2' secara headless..."
+    VBoxManage startvm "$2" --type headless 
+    echo "VM '$2' berhasil dinyalakan. Status: running"
+}
+
+stop() {
+    echo "Mematikan VM '$2' secara aman..."
+    VBoxManage controlvm "$2" acpipowerbutton 
+    echo "VM '$2' berhasil dimatikan. Status: powered off"
+}
+
 snapshot(){
     if [ "$2" == "create" ]; then
         VBoxManage snapshot $3 take $4
