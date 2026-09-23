@@ -58,11 +58,19 @@ kernel_info="$KERNEL_VER"
 user_count="$REGULAR_USERS"
 proc_count="$RUNNING_PROCESSES"
 virt_display="$VIRT_STATUS"
+disk_usage=$(df | grep -w "/" | awk '{print $5}' | sed 's/%//')
+mem_usage=$(free | grep "Mem" | awk '{print 100*($2 - $7)/$2}')
 
 # Ambil Output Resource Check jika program sudah dikompilasi
 if [ -x "./resource_check" ]; then
     read -r disk_status disk_detail mem_status mem_detail <<< $(echo "$disk_usage $mem_usage" | ./resource_check)
 fi
+
+# Print Disk & Memory Usage
+echo ""
+echo "Menghitung metrik varian kelompok..."
+awk -v disk_usage=$disk_usage -v disk_status="$disk_status" 'BEGIN{printf "Disk usage	: %d%%   [ %s ]\n", disk_usage, disk_status}'
+awk -v mem_usage=$mem_usage -v mem_status="$mem_status" 'BEGIN{printf "Memory usage	: %d%%   [ %s ]\n", mem_usage, mem_status}'
 
 # Remove (_)
 disk_detail="${disk_detail//_/ }"
