@@ -52,7 +52,7 @@ echo "===================================
      TUGAS 1 OS - KELOMPOK B7      
 ==================================="
 if [ "$1" == "list" ]; then
-    list $1
+    vm_list $1
 elif [ "$1" == "info" ]; then
     vm_info "$2"
 elif [ "$1" == "start" ]; then
