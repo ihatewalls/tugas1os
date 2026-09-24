@@ -1,0 +1,14 @@
+====================================================================
+TUGAS 1 OS - KELOMPOK B07
+====================================================================
+| Check Category | Item               | Status | Details
+--------------------------------------------------------------------
+| OS             | Kali GNU/Linux Rolling | PASS   | Kernel 6.6.87.2-microsoft-standard-WSL2
+| Users          | Regular accounts   | PASS   | 1 akun
+| Processes      | Running            | PASS   | 46 proses berjalan
+| Virtualization | Hypervisor         | PASS   | Terdeteksi (wsl)
+--------------------------------------------------------------------
+| Disk           | 1%                | PASS   | Aman
+| Memori         | 4.36979%                | PASS   | Aman
+| Uptime         | VM Uptime Check    | PASS   |  1 hour, 33 minutes
+====================================================================
